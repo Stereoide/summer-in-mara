@@ -2,14 +2,14 @@
 
 @section('content')
 	<h1>Add Character</h1>
-	
+
 	<form action="{{ route('characters.store') }}" method="post">
 		@csrf
-		
+
 		<label for="name">Name</label><br />
-		<input type="text" name="name" id="name" value="{{ $character->name }}" />
+		<input type="text" name="name" id="name" value="{{ $character->name }}" autofocus />
 		<br />
-		
+
 		<label for="island_id">Island</label><br />
 		<select name="island_id" id="island_id" size="1">
 		@foreach ($islands as $island)
@@ -17,9 +17,9 @@
 		@endforeach
 		</select><br />
 		<br />
-		
+
 		<input type="submit" value="Save" />
 		<a href="{{ route('characters.index') }}" class="btn">Cancel</a><br />
 	</form>
-	
+
 @endsection
