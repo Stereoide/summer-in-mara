@@ -20,3 +20,7 @@ Route::get('/', function () {
 Route::resource('characters', \App\Http\Controllers\CharacterController::class);
 Route::resource('islands', \App\Http\Controllers\IslandController::class);
 Route::resource('items', \App\Http\Controllers\ItemController::class);
+
+Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
+    return Inertia\Inertia::render('Dashboard');
+})->name('dashboard');
