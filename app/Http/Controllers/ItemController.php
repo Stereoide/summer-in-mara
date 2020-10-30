@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ItemController extends Controller
 {
@@ -15,14 +16,14 @@ class ItemController extends Controller
     public function index()
     {
         /* Fetch items */
-		
+
 		$items = Item::query()
 			->orderBy('name')
 			->get();
-			
+
 		/* Show view */
-		
-		return view('Pages/Items/Index', compact('items'));
+
+        return Inertia::render('Items/Index', compact('items'));
     }
 
     /**
@@ -33,12 +34,12 @@ class ItemController extends Controller
     public function create()
     {
 		/* Instantiate empty model */
-		
+
         $item = new Item();
-			
+
 		/* Show view */
-		
-		return view('Pages/Items/Create', compact('item'));
+
+        return Inertia::render('Items/Create', compact('item'));
     }
 
     /**
@@ -50,18 +51,18 @@ class ItemController extends Controller
     public function store(Request $request)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? '';
-		
+
 		/* Create Item */
-		
+
 		$item = Item::create([
 			'name' => $name,
 		]);
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('items.index'));
     }
 
@@ -73,7 +74,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        dd($item);
+        //
     }
 
     /**
@@ -85,8 +86,8 @@ class ItemController extends Controller
     public function edit(Item $item)
     {
 		/* Show view */
-		
-		return view('Pages/Items/Edit', compact('item'));
+
+        return Inertia::render('Items/Edit', compact('item'));
     }
 
     /**
@@ -99,17 +100,17 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? $item->name;
-		
+
         /* Update item */
-		
+
 		$item->name = $name;
 		$item->save();
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('items.index'));
     }
 

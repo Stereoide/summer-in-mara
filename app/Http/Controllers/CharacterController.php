@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Character;
 use App\Models\Island;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CharacterController extends Controller
 {
@@ -16,15 +17,15 @@ class CharacterController extends Controller
     public function index()
     {
         /* Fetch characters */
-		
+
 		$characters = Character::query()
 			->with('island')
 			->orderBy('name')
 			->get();
-			
+
 		/* Show view */
-		
-		return view('Pages/Characters/Index', compact('characters'));
+
+        return Inertia::render('Characters/Index', compact('characters'));
     }
 
     /**
@@ -35,18 +36,18 @@ class CharacterController extends Controller
     public function create()
     {
 		/* Instantiate empty model */
-		
+
         $character = new Character();
-		
+
 		/* Fetch available islands */
-		
+
 		$islands = Island::query()
 			->orderBy('name')
 			->get();
-			
+
 		/* Show view */
-		
-		return view('Pages/Characters/Create', compact('character', 'islands'));
+
+        return Inertia::render('Characters/Create', compact('character', 'islands'));
     }
 
     /**
@@ -58,20 +59,20 @@ class CharacterController extends Controller
     public function store(Request $request)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? '';
 		$islandId = $data['island_id'] ?? 0;
-		
+
 		/* Create Character */
-		
+
 		$character = Character::create([
 			'name' => $name,
 			'island_id' => $islandId,
 		]);
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('characters.index'));
     }
 
@@ -95,15 +96,14 @@ class CharacterController extends Controller
     public function edit(Character $character)
     {
 		/* Fetch available islands */
-		
+
 		$islands = Island::query()
 			->orderBy('name')
 			->get();
-			
+
 		/* Show view */
-		
-		return view('Pages/Characters/Edit', compact('character', 'islands'));
-        //
+
+        return Inertia::render('Characters/Edit', compact('character', 'islands'));
     }
 
     /**
@@ -116,19 +116,19 @@ class CharacterController extends Controller
     public function update(Request $request, Character $character)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? $character->name;
 		$islandId = $data['island_id'] ?? $character->island_id;
-		
+
         /* Update character */
-		
+
 		$character->name = $name;
 		$character->island_id = $islandId;
 		$character->save();
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('characters.index'));
     }
 

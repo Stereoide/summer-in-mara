@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Island;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class IslandController extends Controller
 {
@@ -15,15 +16,15 @@ class IslandController extends Controller
     public function index()
     {
         /* Fetch islands */
-		
+
 		$islands = Island::query()
 			->with('characters')
 			->orderBy('name')
 			->get();
-			
+
 		/* Show view */
-		
-		return view('Pages/Islands/Index', compact('islands'));
+
+        return Inertia::render('Islands/Index', compact('islands'));
     }
 
     /**
@@ -34,12 +35,12 @@ class IslandController extends Controller
     public function create()
     {
 		/* Instantiate empty model */
-		
+
         $island = new Island();
-			
+
 		/* Show view */
-		
-		return view('Pages/Islands/Create', compact('island'));
+
+        return Inertia::render('Islands/Create', compact('island'));
     }
 
     /**
@@ -51,18 +52,18 @@ class IslandController extends Controller
     public function store(Request $request)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? '';
-		
+
 		/* Create Island */
-		
+
 		$island = Island::create([
 			'name' => $name,
 		]);
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('islands.index'));
     }
 
@@ -84,10 +85,10 @@ class IslandController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function edit(Island $island)
-    {	
+    {
 		/* Show view */
-		
-		return view('Pages/Islands/Edit', compact('island'));
+
+        return Inertia::render('Islands/Edit', compact('island'));
     }
 
     /**
@@ -100,17 +101,17 @@ class IslandController extends Controller
     public function update(Request $request, Island $island)
     {
 		/* Sanitize data */
-		
+
         $data = $request->all();
 		$name = $data['name'] ?? $island->name;
-		
+
         /* Update island */
-		
+
 		$island->name = $name;
 		$island->save();
-		
+
 		/* Redirect */
-		
+
 		return redirect(route('islands.index'));
     }
 
