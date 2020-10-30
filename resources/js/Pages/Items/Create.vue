@@ -58,6 +58,6 @@ export default {
 
     mounted() {
         this.form.name = this.item.name;
-    }
+    },
 }
 </script>

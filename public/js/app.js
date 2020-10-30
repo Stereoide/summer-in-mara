@@ -3431,6 +3431,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['characters'],
@@ -3438,7 +3440,21 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      filter: ''
+    };
+  },
+  computed: {
+    filteredCharacters: function filteredCharacters() {
+      var _this = this;
+
+      return this.characters.filter(function (character) {
+        return character.name.toLowerCase().includes(_this.lowercaseFilter) || character.island.name.toLowerCase().includes(_this.lowercaseFilter);
+      });
+    },
+    lowercaseFilter: function lowercaseFilter() {
+      return this.filter.toLowerCase();
+    }
   },
   methods: {}
 });
@@ -3660,6 +3676,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['islands'],
@@ -3667,7 +3685,21 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      filter: ''
+    };
+  },
+  computed: {
+    filteredIslands: function filteredIslands() {
+      var _this = this;
+
+      return this.islands.filter(function (island) {
+        return island.name.toLowerCase().includes(_this.lowercaseFilter);
+      });
+    },
+    lowercaseFilter: function lowercaseFilter() {
+      return this.filter.toLowerCase();
+    }
   },
   methods: {}
 });
@@ -3849,6 +3881,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['items'],
@@ -3856,9 +3890,24 @@ __webpack_require__.r(__webpack_exports__);
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
   data: function data() {
-    return {};
+    return {
+      filter: ''
+    };
   },
-  methods: {}
+  computed: {
+    filteredItems: function filteredItems() {
+      var _this = this;
+
+      return this.items.filter(function (item) {
+        return item.name.toLowerCase().includes(_this.lowercaseFilter);
+      });
+    },
+    lowercaseFilter: function lowercaseFilter() {
+      return this.filter.toLowerCase();
+    }
+  },
+  methods: {},
+  mounted: function mounted() {}
 });
 
 /***/ }),
@@ -26235,47 +26284,81 @@ var render = function() {
               _vm.characters.length !== 0
                 ? _c(
                     "div",
-                    { staticClass: "characters" },
-                    _vm._l(_vm.characters, function(character, index) {
-                      return _c("div", { staticClass: "character" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href: _vm.route("characters.edit", [character.id])
+                    { staticClass: "characters mb-4" },
+                    [
+                      _c("div", { staticClass: "items-filter mb-4" }, [
+                        _c("label", { attrs: { for: "filter" } }, [
+                          _vm._v("Filter")
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.filter,
+                              expression: "filter"
                             }
+                          ],
+                          staticClass:
+                            "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                          attrs: {
+                            type: "text",
+                            name: "filter",
+                            id: "filter",
+                            autofocus: ""
                           },
-                          [
-                            _vm._v(
-                              _vm._s(character.name) +
-                                " / " +
-                                _vm._s(character.island.name)
-                            )
-                          ]
-                        )
-                      ])
-                    }),
-                    0
+                          domProps: { value: _vm.filter },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.filter = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.filteredCharacters, function(
+                        character,
+                        index
+                      ) {
+                        return _c("div", { staticClass: "character" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: _vm.route("characters.edit", [
+                                  character.id
+                                ])
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(character.name) +
+                                  " / " +
+                                  _vm._s(character.island.name)
+                              )
+                            ]
+                          )
+                        ])
+                      })
+                    ],
+                    2
                   )
                 : _vm._e(),
               _vm._v(" "),
               _c("p", [
                 _c(
-                  "button",
+                  "a",
                   {
                     staticClass:
-                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow",
+                    attrs: { href: _vm.route("characters.create") }
                   },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn",
-                        attrs: { href: _vm.route("characters.create") }
-                      },
-                      [_vm._v("Add character")]
-                    )
-                  ]
+                  [_vm._v("Add character")]
                 )
               ])
             ]
@@ -26674,41 +26757,70 @@ var render = function() {
               _vm.islands.length !== 0
                 ? _c(
                     "div",
-                    { staticClass: "islands" },
-                    _vm._l(_vm.islands, function(island, index) {
-                      return _c("div", { staticClass: "island" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: {
-                              href: _vm.route("islands.edit", [island.id])
+                    { staticClass: "islands mb-4" },
+                    [
+                      _c("div", { staticClass: "items-filter mb-4" }, [
+                        _c("label", { attrs: { for: "filter" } }, [
+                          _vm._v("Filter")
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.filter,
+                              expression: "filter"
                             }
+                          ],
+                          staticClass:
+                            "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                          attrs: {
+                            type: "text",
+                            name: "filter",
+                            id: "filter",
+                            autofocus: ""
                           },
-                          [_vm._v(_vm._s(island.name))]
-                        )
-                      ])
-                    }),
-                    0
+                          domProps: { value: _vm.filter },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.filter = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.filteredIslands, function(island, index) {
+                        return _c("div", { staticClass: "island" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: _vm.route("islands.edit", [island.id])
+                              }
+                            },
+                            [_vm._v(_vm._s(island.name))]
+                          )
+                        ])
+                      })
+                    ],
+                    2
                   )
                 : _vm._e(),
               _vm._v(" "),
               _c("p", [
                 _c(
-                  "button",
+                  "a",
                   {
                     staticClass:
-                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow",
+                    attrs: { href: _vm.route("islands.create") }
                   },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn",
-                        attrs: { href: _vm.route("islands.create") }
-                      },
-                      [_vm._v("Add island")]
-                    )
-                  ]
+                  [_vm._v("Add island")]
                 )
               ])
             ]
@@ -27048,39 +27160,70 @@ var render = function() {
               _vm.items.length !== 0
                 ? _c(
                     "div",
-                    { staticClass: "items" },
-                    _vm._l(_vm.items, function(item, index) {
-                      return _c("div", { staticClass: "item" }, [
-                        _c(
-                          "a",
-                          {
-                            attrs: { href: _vm.route("items.edit", [item.id]) }
+                    { staticClass: "items mb-4" },
+                    [
+                      _c("div", { staticClass: "items-filter mb-4" }, [
+                        _c("label", { attrs: { for: "filter" } }, [
+                          _vm._v("Filter")
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.filter,
+                              expression: "filter"
+                            }
+                          ],
+                          staticClass:
+                            "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                          attrs: {
+                            type: "text",
+                            name: "filter",
+                            id: "filter",
+                            autofocus: ""
                           },
-                          [_vm._v(_vm._s(item.name))]
-                        )
-                      ])
-                    }),
-                    0
+                          domProps: { value: _vm.filter },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.filter = $event.target.value
+                            }
+                          }
+                        })
+                      ]),
+                      _vm._v(" "),
+                      _vm._l(_vm.filteredItems, function(item, index) {
+                        return _c("div", { staticClass: "item" }, [
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: _vm.route("items.edit", [item.id])
+                              }
+                            },
+                            [_vm._v(_vm._s(item.name))]
+                          )
+                        ])
+                      })
+                    ],
+                    2
                   )
                 : _vm._e(),
               _vm._v(" "),
               _c("p", [
                 _c(
-                  "button",
+                  "a",
                   {
                     staticClass:
-                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow"
+                      "bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow",
+                    attrs: { href: _vm.route("items.create") }
                   },
-                  [
-                    _c(
-                      "a",
-                      {
-                        staticClass: "btn",
-                        attrs: { href: _vm.route("items.create") }
-                      },
-                      [_vm._v("Add item")]
-                    )
-                  ]
+                  [_vm._v("Add item")]
                 )
               ])
             ]
