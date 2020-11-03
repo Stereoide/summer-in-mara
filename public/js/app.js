@@ -3950,9 +3950,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['item'],
+  props: ['characters', 'item'],
   components: {
     AppLayout: _Layouts_AppLayout__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
@@ -3962,6 +3974,18 @@ __webpack_require__.r(__webpack_exports__);
         name: ''
       }
     };
+  },
+  computed: {
+    buyers: function buyers() {
+      return this.characters.filter(function (character) {
+        return character.pivot.priceBuy;
+      });
+    },
+    sellers: function sellers() {
+      return this.characters.filter(function (character) {
+        return character.pivot.priceSell;
+      });
+    }
   },
   methods: {
     submit: function submit() {
@@ -28098,6 +28122,48 @@ var render = function() {
                       }
                     })
                   ]),
+                  _vm._v(" "),
+                  _vm.sellers.length > 0
+                    ? _c(
+                        "div",
+                        { staticClass: "mb-4 characters sellers" },
+                        _vm._l(_vm.sellers, function(character, index) {
+                          return _c("div", { staticClass: "character" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(character.name) +
+                                " (" +
+                                _vm._s(character.island.name) +
+                                ") sells for " +
+                                _vm._s(character.pivot.priceSell) +
+                                "\n                        "
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.buyers.length > 0
+                    ? _c(
+                        "div",
+                        { staticClass: "mb-4 characters buyers" },
+                        _vm._l(_vm.buyers, function(character, index) {
+                          return _c("div", { staticClass: "character" }, [
+                            _vm._v(
+                              "\n                            " +
+                                _vm._s(character.name) +
+                                " (" +
+                                _vm._s(character.island.name) +
+                                ") buys for " +
+                                _vm._s(character.pivot.priceBuy) +
+                                "\n                        "
+                            )
+                          ])
+                        }),
+                        0
+                      )
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("p", [
                     _c(

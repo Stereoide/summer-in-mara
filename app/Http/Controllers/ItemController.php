@@ -85,9 +85,13 @@ class ItemController extends Controller
      */
     public function edit(Item $item)
     {
+        /* Fetch characters that sell/buy this item */
+
+        $characters = $item->characters;
+
 		/* Show view */
 
-        return Inertia::render('Items/Edit', compact('item'));
+        return Inertia::render('Items/Edit', compact('item', 'characters'));
     }
 
     /**

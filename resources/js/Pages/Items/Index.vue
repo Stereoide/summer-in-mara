@@ -11,7 +11,7 @@
                 <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
                     <div v-if="items.length === 0">No items created yet</div>
 
-                    <div class="items mb-4" v-if="items.length !== 0">
+                    <div class="items mb-4 clearfix" v-if="items.length !== 0">
                         <div class="items-filter mb-4">
                             <label for="filter">Filter</label><br/>
                             <input type="text" name="filter" id="filter" v-model="filter" autofocus class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
@@ -30,6 +30,18 @@
         </div>
     </app-layout>
 </template>
+
+<style>
+    .item {
+        display: inline-block;
+        width: 100px;
+        height: 100px;
+        margin: 0 1em 1em 0;
+        overflow: hidden;
+        float: left;
+        border: solid 1px #000;
+    }
+</style>
 
 <script>
 import AppLayout from '@/Layouts/AppLayout'

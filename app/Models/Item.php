@@ -17,4 +17,15 @@ class Item extends Model
     protected $fillable = [
         'name',
     ];
+
+    /* Relationships */
+
+    public function characters()
+    {
+        return $this
+            ->belongsToMany(Character::class)
+            ->orderBy('name')
+            ->with('island')
+            ->withPivot('priceSell', 'priceBuy');
+    }
 }
