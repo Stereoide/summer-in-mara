@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Character;
 use App\Models\Island;
+use App\Models\Item;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -101,9 +102,19 @@ class CharacterController extends Controller
 			->orderBy('name')
 			->get();
 
-		/* Show view */
+		/* Fetch available items */
 
-        return Inertia::render('Characters/Edit', compact('character', 'islands'));
+        $items = Item::query()
+            ->orderBy('name')
+            ->get();
+
+        /* Fetch already assigned items */
+
+        $assignedItems = $character->items;
+
+        /* Show view */
+
+        return Inertia::render('Characters/Edit', compact('character', 'islands', 'items', 'assignedItems'));
     }
 
     /**
@@ -120,12 +131,22 @@ class CharacterController extends Controller
         $data = $request->all();
 		$name = $data['name'] ?? $character->name;
 		$islandId = $data['island_id'] ?? $character->island_id;
+		$assignedItems = collect($data['assigned_items'] ?? []);
 
         /* Update character */
 
 		$character->name = $name;
 		$character->island_id = $islandId;
 		$character->save();
+
+		/* Update items */
+
+        $character->items()->detach();
+
+        $assignedItems
+            ->each(function($item) use ($character) {
+                $character->items()->attach($item['id'], $item['pivot']);
+            });
 
 		/* Redirect */
 

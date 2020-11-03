@@ -18,16 +18,19 @@ class Character extends Model
         'name',
 		'island_id',
     ];
-	
+
 	/* Relationships */
-	
+
 	public function island()
 	{
 		return $this->belongsTo(Island::class);
 	}
-	
+
 	public function items()
 	{
-		return $this->belongsToMany(Item::class);
+		return $this
+            ->belongsToMany(Item::class)
+            ->orderBy('name')
+            ->withPivot('priceSell', 'priceBuy');
 	}
 }
