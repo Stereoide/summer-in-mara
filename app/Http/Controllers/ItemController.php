@@ -89,6 +89,10 @@ class ItemController extends Controller
 
         $characters = $item->characters;
 
+        /* Determine building chain for this item */
+
+        $item = $this->fetchRecoursiveSourceItems($item);
+
 		/* Show view */
 
         return Inertia::render('Items/Edit', compact('item', 'characters'));
@@ -127,5 +131,16 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         //
+    }
+
+    private function fetchRecoursiveSourceItems(Item $item)
+    {
+        $item->sourceItems = $item
+            ->sourceItems
+            ->map(function($sourceItem) {
+                return $this->fetchRecoursiveSourceItems($sourceItem);
+            });
+
+        return $item;
     }
 }

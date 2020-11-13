@@ -17,8 +17,8 @@
                             <input type="text" name="filter" id="filter" v-model="filter" autofocus class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
                         </div>
 
-                        <div class="item" v-for="(item, index) in filteredItems">
-                            <a :href="route('items.edit', [item.id])">{{ item.name }}</a>
+                        <div>
+                            <a :href="route('items.edit', [item.id])" :title="item.name" class="item" :style="{'background-image': 'url(' + getItemThumbnailUrl(item) + ')'}" v-for="(item, index) in filteredItems"></a>
                         </div>
                     </div>
 
@@ -34,12 +34,21 @@
 <style>
     .item {
         display: inline-block;
-        width: 100px;
-        height: 100px;
+        width: 75px;
+        height: 75px;
+        padding: 0.25em;
         margin: 0 1em 1em 0;
         overflow: hidden;
         float: left;
-        border: solid 1px #000;
+        background-color: #4d4940;
+        border-radius: 5px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center center;
+    }
+
+    .item:hover {
+        background-color: #47a580;
     }
 </style>
 
@@ -71,7 +80,12 @@ export default {
         },
     },
 
-    methods: {},
+    methods: {
+        getItemThumbnailUrl(item)
+        {
+            return 'thumbnails/items/' + item.name.toLowerCase().replace(' ', '-').replace('(', '').replace(')', '').replace('?', '') + '.png';
+        },
+    },
 
     mounted() {
 

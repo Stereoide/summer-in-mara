@@ -28,4 +28,12 @@ class Item extends Model
             ->with('island')
             ->withPivot('priceSell', 'priceBuy');
     }
+
+    public function sourceItems()
+    {
+        return $this
+            ->belongsToMany(Item::class, null, 'item_id', 'source_item_id')
+            ->orderBy('name')
+            ->withPivot('amount');
+    }
 }
